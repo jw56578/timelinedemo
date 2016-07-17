@@ -22,6 +22,15 @@ var canvasWidth  = canvas.width;
 var canvasHeight = canvas.height;
 var imageData = ctx.getImageData(0, 0, canvasWidth, canvasHeight)
 var data = imageData.data;
+var buf;
+var buf8;
+var data;
+var cellWidth;
+var heightWidth;
+
+buf = new ArrayBuffer(imageData.data.length);
+buf8 = new Uint8ClampedArray(buf);
+data = new Uint32Array(buf);
 
 function main(){
   refreshCanvas({
@@ -34,19 +43,13 @@ function main(){
   requestAnimationFrame(main); 
 }
 
-var buf;
-var buf8;
-var data;
-var cellWidth;
-var heightWidth;
+
 
 var refreshCanvas = function(settings){
     var screen = settings.screen;
 
    
-      buf = new ArrayBuffer(settings.imageData.data.length);
-      buf8 = new Uint8ClampedArray(buf);
-      data = new Uint32Array(buf);
+ 
 
      for (var y = 0; y < settings.height; ++y) {
         for (var x = 0; x < settings.width; ++x) {
