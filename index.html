@@ -12,7 +12,7 @@
 </head>
 
 <body style="margin:0px">
-  <canvas id="canvas" ref="canvas" width="555" height="555"/>
+  <canvas id="canvas" ref="canvas" width="1000" height="1000"/>
 
 <script>
 
@@ -50,15 +50,17 @@ var refreshCanvas = function(settings){
 
    
  
-
+    var random = Math.floor(Math.random() * 233);
+    var greenRandom = Math.floor(Math.random() * 233);
      for (var y = 0; y < settings.height; ++y) {
         for (var x = 0; x < settings.width; ++x) {
             var index = y * settings.width + x;
+            
             //value = value & 0xff;
             data[y * settings.width + x] =
                 (255   << 24) |    // alpha
-                (123 << 16) |    // blue
-                (111 <<  8) |    // green
+                (random << 16) |    // blue
+                (greenRandom <<  8) |    // green
                 67;            // red
         }
     }
