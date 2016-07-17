@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <!-- Use minimum-scale=1 to enable GPU rasterization -->
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, user-scalable=0, maximum-scale=1, minimum-scale=1"
+  >
+</head>
+
+<body style="margin:0px">
+  <canvas id="canvas" ref="canvas" width="100" height="100"/>
+
+<script>
+
+function main(){
+  var canvas = document.getElementById("canvas");
+  var ctx = canvas.getContext('2d');
+  var canvasWidth  = canvas.width;
+  var canvasHeight = canvas.height;
+  var imageData = ctx.getImageData(0, 0, canvasWidth, canvasHeight)
+  var data = imageData.data;
+
+  refreshCanvas({
+    ctx : ctx,
+    width:canvasWidth,
+    height:canvasHeight,
+    imageData: imageData
+  });
+
+  requestAnimationFrame(main); 
+}
+
+var buf;
+var buf8;
+var data;
+var cellWidth;
+var heightWidth;
+
+var refreshCanvas = function(settings){
+    var screen = settings.screen;
+
+   
+      buf = new ArrayBuffer(settings.imageData.data.length);
+      buf8 = new Uint8ClampedArray(buf);
+      data = new Uint32Array(buf);
+
+     for (var y = 0; y < settings.height; ++y) {
+        for (var x = 0; x < settings.width; ++x) {
+            var index = y * settings.width + x;
+            //value = value & 0xff;
+            data[y * settings.width + x] =
+                (255   << 24) |    // alpha
+                (123 << 16) |    // blue
+                (111 <<  8) |    // green
+                67;            // red
+        }
+    }
+
+    settings.imageData.data.set(buf8);
+    settings.ctx.putImageData(settings.imageData, 0, 0);
+
+    
+}
+
+main();
+
+
+
+</script>
+<p>
+  Here was have a canvas element and we are manually paiting what is on the canvas one pixel at a time to some random color
+  This is how you can have the most control in painting to the canvas as opposed to specifying to draw a shape or an image
+  we use he requestAnimationFrame method in order to sync our changes with the built in frame rate of the browser
+
+  what this means is that if we were doing an animation and we used a timer to do this, if the timer was set to anything less than 16 ms it would be worthless because 
+  the browser does not update the screen that often
+
+  so all we are doing is repainting the canvas every 16ms to the same thing to keep it simple
+</p>
+</body>
+
+</html>
