@@ -12,11 +12,14 @@
 </head>
 
 <body style="margin:0px">
-  <canvas id="canvas" ref="canvas" width="1000" height="700"></canvas>
+  <canvas id="layer1" width="1000" height="500" 
+   style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
+ <canvas id="layer2" width="100" height="100" 
+   style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
 
 <script>
 
-var canvas = document.getElementById("canvas");
+var canvas = document.getElementById("layer1");
 var ctx = canvas.getContext('2d');
 var canvasWidth  = canvas.width;
 var canvasHeight = canvas.height;
@@ -40,7 +43,7 @@ function main(){
     imageData: imageData
   });
 
-  requestAnimationFrame(main); 
+  //requestAnimationFrame(main); 
 }
 
 
@@ -81,6 +84,12 @@ main();
   so all we are doing is repainting the canvas every 16ms to the same thing to keep it simple
 
   wierd  - a self closing canvas tag creates performance issues
+
+  once you get to a cerain point, there is no performance improvement you can do for this plain example
+  having to loop through the entire data and doing a putaImageData will take longer than 16ms
+  the solution to this is that the entire canvas should not be drawn over, use layers to only re draw things that move
+
+
 </p>
 </body>
 
