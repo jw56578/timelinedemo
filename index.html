@@ -12,7 +12,7 @@
 </head>
 
 <body style="margin:0px">
-  <canvas id="canvas" ref="canvas" width="1000" height="1000"/>
+  <canvas id="canvas" ref="canvas" width="1000" height="700"></canvas>
 
 <script>
 
@@ -47,24 +47,18 @@ function main(){
 
 var refreshCanvas = function(settings){
     var screen = settings.screen;
-
-   
- 
-    var random = Math.floor(Math.random() * 233);
-    var greenRandom = Math.floor(Math.random() * 233);
-     for (var y = 0; y < settings.height; ++y) {
-        for (var x = 0; x < settings.width; ++x) {
-            var index = y * settings.width + x;
-            
-            //value = value & 0xff;
-            data[y * settings.width + x] =
-                (255   << 24) |    // alpha
-                (random << 16) |    // blue
-                (greenRandom <<  8) |    // green
-                67;            // red
-        }
+    for (var y = 0; y < settings.height; ++y) {
+      for (var x = 0; x < settings.width; ++x) {
+          var index = y * settings.width + x;
+          
+          //value = value & 0xff;
+          data[y * settings.width + x] =
+              (255   << 24) |    // alpha
+              (113 << 16) |    // blue
+              (21 <<  8) |    // green
+              67;            // red
+      }
     }
-
     settings.imageData.data.set(buf8);
     settings.ctx.putImageData(settings.imageData, 0, 0);
 
@@ -85,6 +79,8 @@ main();
   the browser does not update the screen that often
 
   so all we are doing is repainting the canvas every 16ms to the same thing to keep it simple
+
+  wierd  - a self closing canvas tag creates performance issues
 </p>
 </body>
 
