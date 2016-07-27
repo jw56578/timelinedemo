@@ -14,7 +14,7 @@
 <body style="margin:0px">
   <canvas id="layer1" width="1000" height="500" 
    style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
- <canvas id="layer2" width="100" height="100" 
+ <canvas id="layer2" width="1000" height="500" 
    style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
 
 <script>
@@ -25,11 +25,19 @@ var canvasWidth  = canvas.width;
 var canvasHeight = canvas.height;
 var imageData = ctx.getImageData(0, 0, canvasWidth, canvasHeight)
 var data = imageData.data;
+
+var canvas2 = document.getElementById("layer2");
+var ctx2 = canvas2.getContext('2d');
+var canvasWidth2  = canvas2.width;
+var canvasHeight2 = canvas2.height;
+var imageData2 = ctx2.getImageData(0, 0, canvasWidth2, canvasHeight2)
+var data2 = imageData2.data;
+
+
 var buf;
 var buf8;
 var data;
 var cellWidth;
-var heightWidth;
 
 buf = new ArrayBuffer(imageData.data.length);
 buf8 = new Uint8ClampedArray(buf);
@@ -40,10 +48,21 @@ function main(){
     ctx : ctx,
     width:canvasWidth,
     height:canvasHeight,
-    imageData: imageData
+    imageData: imageData,
+    r:3,
+    g:44,
+    b:88,
+    a:255
   });
 
-  //requestAnimationFrame(main); 
+  layer2Animation(); 
+}
+
+function layer2Animation(){
+  
+  //how do we render a square to one specific location
+  //just use the built in square draw function
+  requestAnimationFrame(layer2Animation); 
 }
 
 
@@ -56,10 +75,10 @@ var refreshCanvas = function(settings){
           
           //value = value & 0xff;
           data[y * settings.width + x] =
-              (255   << 24) |    // alpha
-              (113 << 16) |    // blue
-              (21 <<  8) |    // green
-              67;            // red
+              (settings.a   << 24) |    // alpha
+              (settings.b << 16) |    // blue
+              (settings.g <<  8) |    // green
+              settings.r;            // red
       }
     }
     settings.imageData.data.set(buf8);
@@ -77,14 +96,16 @@ main();
   Here was have a canvas element and we are manually paiting what is on the canvas one pixel at a time to some random color
   This is how you can have the most control in painting to the canvas as opposed to specifying to draw a shape or an image
   we use he requestAnimationFrame method in order to sync our changes with the built in frame rate of the browser
-
+</p>
+<p>
   what this means is that if we were doing an animation and we used a timer to do this, if the timer was set to anything less than 16 ms it would be worthless because 
   the browser does not update the screen that often
 
   so all we are doing is repainting the canvas every 16ms to the same thing to keep it simple
 
   wierd  - a self closing canvas tag creates performance issues
-
+</p>
+<p>
   once you get to a cerain point, there is no performance improvement you can do for this plain example
   having to loop through the entire data and doing a putaImageData will take longer than 16ms
   the solution to this is that the entire canvas should not be drawn over, use layers to only re draw things that move
